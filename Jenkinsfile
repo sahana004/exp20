@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Build') {
             steps {
                 bat 'mvn clean package'
@@ -11,6 +12,13 @@ pipeline {
         stage('Docker Build') {
             steps {
                 bat 'docker build -t sample-webapp .'
+            }
+        }
+
+        stage('Stop Old Container') {
+            steps {
+                bat 'docker stop sample-webapp-container || exit 0'
+                bat 'docker rm sample-webapp-container || exit 0'
             }
         }
 
